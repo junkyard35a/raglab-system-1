@@ -68,7 +68,6 @@
 - Add caching layer for repeated queries
 - Replace Chroma with Weaviate or Pinecone for scalability
 - Use Redis for context caching
-- Containerize services with Docker
 - Kubernetes for orchestration at scale
 
 ---
@@ -76,7 +75,6 @@
 ### 7. Improvements in progress
 
 - Add evaluation metrics (faithfulness, relevance)
-- Support more document types (Markdown, Word, etc.)
 - Implement logging and monitoring
 - Add prompt engineering guardrails
 - Explore LoRA fine-tuning for domain-specific answers
