@@ -22,21 +22,22 @@
 
 ### 3. Component Breakdown
 
-| Component | Description |
-|----------|-------------|
-| Document Loader | Uses `PyPDFLoader` to read input files |
-| Text Splitter | `RecursiveCharacterTextSplitter` for semantic chunking |
-| Embedding Model | `sentence-transformers/all-MiniLM-L6-v2` |
-| Vector Store | Chroma for CPU-friendly vector DB |
-| Retrieval API | FastAPI endpoint to serve similarity search |
-| LLM Generator | Qwen-14B via `llama.cpp` and `OpenWebUI` |
-| Query Agent | Combines retrieval + generation |
+| Service | Function | Description |
+|---------|----------|-------------|
+| rag_server | Document Loader | Uses `UnstructuredFileLoader` to read input files |
+| rag_server | Text Splitter | `RecursiveCharacterTextSplitter` for semantic chunking |
+| rag_server | Embedding Model | `sentence-transformers/all-MiniLM-L6-v2` |
+| rag_server | Vector Store | Chroma for CPU-friendly vector DB |
+| rag_proxy | Retrieval API | FastAPI endpoint to serve similarity search |
+| rag_proxy | Query Agent | Combines retrieval + generation |
+| localLLM | LLM Generator | Qwen-14B via llama.cpp/llama-server |
+| openwebui | Webfront chat | OpenWebUI |
 
 ---
 
 ### 4. Data Flow
 
-1. User submits query
+1. User submits query via webfront chat
 2. Query hits `/retrieve` endpoint
 3. Vector store returns top-k similar chunks
 4. Query agent formats prompt with context
@@ -51,7 +52,7 @@
 |--------|-----|
 | Chroma over FAISS | Simpler to set up locally; no extra indexing needed |
 | Sentence Transformers | Lightweight and works well with CPU |
-| No cloud hosting | Entirely local due to hardware constraints |
+| No cloud hosting | Entirely local for security and privacy use cases |
 | Sync over async API | Simpler implementation for MVP |
 
 ---
@@ -66,7 +67,7 @@
 
 ---
 
-### 7. Work in Progress: Improvements
+### 7. Improvements in progress
 
 - Add evaluation metrics (faithfulness, relevance)
 - Support more document types (Markdown, Word, etc.)
