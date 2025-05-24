@@ -16,7 +16,7 @@
 
 **Infrastructure**
 
-![Alt](images/LocalLLM+RAG-Infrastructure-v12.drawio.png)
+![LLM+RAG-Infra-diagram](images/LocalLLM+RAG-Infrastructure-v12.drawio.png)
 
 **Hardware Specs**
 | Host | Function | GPU | Hardware | OS |
@@ -63,20 +63,23 @@
 
 ---
 
-### 6. Scaling Considerations
+### 6. Next Steps
 
+#### 6.1 Scaling Considerations
 - Add caching layer for repeated queries
 - Replace Chroma with Weaviate or Pinecone for scalability
 - Use Redis for context caching
 - Kubernetes for orchestration at scale
 
----
-
-### 7. Improvements in progress
-
+#### 6.2 Improvements in progress
+- Add GPU and use 2B-5B on rag server and improve retrieval algorithms
 - Add evaluation metrics (faithfulness, relevance)
 - Implement logging and monitoring
 - Add prompt engineering guardrails
 - Explore LoRA fine-tuning for domain-specific answers
 
+#### 6.3 Fixes in progress
+- Fix streaming tokenization issues between LLM through rag proxy to webfront
+- Fix rag proxy and openwebui non-streaming think appearing in answers
 ---
+
