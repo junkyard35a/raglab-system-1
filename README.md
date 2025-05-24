@@ -10,15 +10,16 @@
 
 ---
 
-### 2. Architecture Diagram
+### 2. Architecture
 
+#### 2.1 TL;DR
 - User → Frontend → FastAPI → Chroma (retrieval) → Qwen (generation)
 
-**Infrastructure**
+#### 2.2 Infrastructure
 
 ![LLM+RAG-Infra-diagram](images/LocalLLM+RAG-Infrastructure-v12.drawio.png)
 
-**Hardware Specs**
+#### 2.3 Hardware Specs
 | Host | Function | GPU | Hardware | OS |
 |------|----------|-----|----------|----|
 | ds1 | Local LLM | Geforce RTX 4060 16GB VRAM | AMD Ryzen 5 5500, Gigabyte B550M DS3H AC, Lexar SSD NM790 2TB, 64GB RAM | Ubuntu2404LTS |
