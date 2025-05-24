@@ -16,7 +16,7 @@
 
 **Infrastructure**
 
-(images/LocalLLM+RAG-Infrastructure-v11.drawio.png)
+![Alt](images/LocalLLM+RAG-Infrastructure-v11.drawio.png)
 
 ---
 
