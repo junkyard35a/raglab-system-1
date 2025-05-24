@@ -16,7 +16,7 @@
 
 **Infrastructure**
 
-![Alt](images/LocalLLM+RAG-Infrastructure-v11.drawio.png)
+![Alt](images/LocalLLM+RAG-Infrastructure-v12.drawio.png)
 
 **Hardware Specs**
 | Host | Function | GPU | Hardware | OS |
