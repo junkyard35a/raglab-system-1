@@ -8,6 +8,8 @@
 
 **Target Audience**: Developers, AI Architects, MLOps Engineers  
 
+**Value proposition**: [Use Cases](artefacts/pages/usecases)
+
 ---
 
 ### 2. Architecture
@@ -17,7 +19,7 @@
 
 #### 2.2 Infrastructure
 
-![LLM+RAG-Infra-diagram](images/LocalLLM+RAG-Infrastructure-v12.drawio.png)
+![LLM+RAG-Infra-diagram](artefacts/images/LocalLLM+RAG-Infrastructure-v12.drawio.png)
 
 #### 2.3 Hardware Specs
 | Host | Function | GPU | Hardware | OS |
