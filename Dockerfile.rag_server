@@ -1,0 +1,36 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    ffmpeg \
+    libgl1-mesa-glx \
+    libglib2.0 \
+    curl \
+    wget \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage layer caching
+COPY rag_server/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -U langchain-huggingface
+RUN pip install huggingface_hub[hf_xet]
+RUN pip install hf_xet
+RUN pip install langchain-community langchain-huggingface langchain-chroma chromadb sentence-transformers unstructured[all-docs]
+RUN pip install unstructured[all-docs] python-docx pandas openpyxl pdfminer.six
+
+# Copy application code and PDFs
+COPY rag_server/rag_server.py .
+COPY data/ data/
+
+EXPOSE 18000
+
+CMD ["uvicorn", "rag_server:app", "--host", "0.0.0.0", "--port", "18000"]

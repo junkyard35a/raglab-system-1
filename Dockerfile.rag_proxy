@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install -y gcc wget curl net-tools&& \
+    rm -rf /var/lib/apt/lists/*
+
+COPY rag_proxy_fastapi/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY rag_proxy_fastapi/rag_proxy_fastapi.py .
+
+EXPOSE 5000
+
+CMD ["uvicorn", "rag_proxy_fastapi:app", "--host", "0.0.0.0", "--port", "5000"]

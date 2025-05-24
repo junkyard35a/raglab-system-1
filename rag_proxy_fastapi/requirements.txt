@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+requests
+langchain-community
+langchain-huggingface
+langchain-chroma
+chromadb
+sentence-transformers
