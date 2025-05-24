@@ -2,8 +2,10 @@
 
 ### 1. Overview
 
-**Project Name**: LocalLLM RAG System (Personal Lab) 
+**Project Name**: LocalLLM RAG System (Personal Lab).
+
 **Objective**: Build a minimal but functional RAG-based QA system using Qwen-14B and a lightweight backend.  
+
 **Target Audience**: Developers, AI Architects, MLOps Engineers  
 
 ---
@@ -12,7 +14,9 @@
 
 - User → Frontend → FastAPI → Chroma (retrieval) → Qwen (generation)
 
-(Diagram TBC)
+**Infrastructure**
+
+(images/LocalLLM+RAG-Infrastructure-v11.drawio.png)
 
 ---
 
