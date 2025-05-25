@@ -8,7 +8,7 @@
 
 **Target Audience**: Developers, AI Architects, MLOps Engineers  
 
-**Value proposition**: [Use Cases](artefacts/pages/usecases)
+**Value proposition**: [Use Cases](USECASES.MD)
 
 ---
 
