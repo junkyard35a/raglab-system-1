@@ -24,8 +24,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install -U langchain-huggingface
 RUN pip install huggingface_hub[hf_xet]
 RUN pip install hf_xet
-RUN pip install langchain-community langchain-huggingface langchain-chroma chromadb sentence-transformers unstructured[all-docs]
-RUN pip install unstructured[all-docs] python-docx pandas openpyxl pdfminer.six
+RUN pip install \
+    langchain-community \
+    langchain-huggingface \
+    langchain>=0.1.0 \
+    langchain-chroma \
+    chromadb \
+    sentence-transformers>=2.2.0 \
+    unstructured[all-docs] \
+    transformers>=4.30.0 \
+    torch>=2.0.0 \
+    unstructured[all-docs] \
+    python-docx \
+    pandas \
+    openpyxl \
+    pdfminer.six
 
 # Copy application code and PDFs
 COPY rag_server/rag_server.py .

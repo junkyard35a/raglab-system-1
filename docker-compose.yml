@@ -8,6 +8,8 @@ services:
     ports:
       - "18000:18000"
     restart: unless-stopped
+    volumes:
+      - ./data:/app/data
 
   rag-proxy:
     build:
