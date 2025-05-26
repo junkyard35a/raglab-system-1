@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Query, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
 import requests
 import uvicorn
 import json
 import logging
+import os
 import time
 
 # Setup logging
@@ -12,10 +13,15 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-# Your LLM endpoint (must support OpenAI API)
-QWEN_COMPLETION_URL = "http://172.17.0.1:10000/v1/chat/completions"
-RAG_SERVER = "http://rag-server:18000/retrieve"
+# Configuration from environment variables
+QWEN_COMPLETION_URL = os.getenv("QWEN_COMPLETION_URL", "http://172.17.0.1:10000/v1/chat/completions")
+RAG_SERVER_BASE = os.getenv("RAG_SERVER_URL", "http://rag-server:18000")
+RAG_RETRIEVAL_MODE = os.getenv("RAG_RETRIEVAL_MODE", "default")  # default or hybrid
 
+# Construct RAG server URLs
+RAG_RETRIEVE_URL = f"{RAG_SERVER_BASE}/retrieve"
+RAG_HYBRID_URL = f"{RAG_SERVER_BASE}/hybrid-retrieve"
+RAG_REINDEX_URL = f"{RAG_SERVER_BASE}/reindex"
 
 def generate_openai_stream(messages):
     """Stream response from LLM with full conversation history"""
@@ -139,6 +145,29 @@ def get_full_completion(messages):
         return {"error": str(e)}
 
 
+def format_rag_context(results):
+    """Format retrieved documents with metadata for LLM consumption"""
+    if not results:
+        return ""
+    
+    formatted_docs = []
+    for i, doc in enumerate(results):
+        source = doc.get("source", "unknown")
+        score = doc.get("score", 0)
+        content = doc.get("content", "")
+        
+        # Format document with metadata
+        formatted_doc = (
+            f"[Document {i+1}]\n"
+            f"Source: {source}\n"
+            f"Relevance Score: {score:.2f}\n"
+            f"Content: {content}\n"
+        )
+        formatted_docs.append(formatted_doc)
+    
+    return "\n".join(formatted_docs)
+
+
 @app.post("/v1/chat/completions")
 async def v1_chat_completions(request: Request):
     try:
@@ -150,16 +179,39 @@ async def v1_chat_completions(request: Request):
     if not messages:
         return JSONResponse({"error": "No messages in request"}, status_code=400)
 
-    # Retrieve RAG context
+    # Get query from last user message
     user_query = next((msg["content"] for msg in reversed(messages) if msg["role"] == "user"), None)
     context = ""
+    
+    # Add RAG context if available
     if user_query:
         try:
-            rag_response = requests.get(f"{RAG_SERVER}?query={user_query}")
+            # Choose retrieval method based on configuration
+            retrieval_url = RAG_HYBRID_URL if RAG_RETRIEVAL_MODE == "hybrid" else RAG_RETRIEVE_URL
+            
+            # Add query parameters
+            params = {
+                "query": user_query,
+                "use_rag": data.get("use_rag", True)  # Allow override via request param
+            }
+            
+            rag_response = requests.get(retrieval_url, params=params)
+            
             if rag_response.status_code == 200:
-                rag_context = "\n\n".join(rag_response.json().get("results", []))
-                # Prepend context as system message
-                messages = [{"role": "system", "content": f"Use the following context:\n{rag_context}"}] + messages
+                results = rag_response.json().get("results", [])
+                rag_context = format_rag_context(results)
+                
+                if rag_context:
+                    # Prepend context as system message
+                    system_prompt = (
+                        "You are a helpful assistant that uses provided context to answer questions. "
+                        "Please cite your sources when referencing information from the context. "
+                        "Context:\n" + rag_context
+                    )
+                    messages = [{"role": "system", "content": system_prompt}] + messages
+            else:
+                logger.warning(f"RAG server returned status code {rag_response.status_code}")
+                
         except Exception as e:
             logger.warning(f"RAG server unreachable: {str(e)}")
 
@@ -204,6 +256,23 @@ def api_tags():
             }
         ]
     }
+
+
+@app.post("/reindex")
+def trigger_reindex():
+    """Endpoint to trigger reindexing on the RAG server"""
+    try:
+        response = requests.post(RAG_REINDEX_URL)
+        return JSONResponse(
+            content={"status": "success", "message": "Reindexing triggered"},
+            status_code=response.status_code
+        )
+    except Exception as e:
+        logger.error(f"Reindex trigger failed: {str(e)}")
+        return JSONResponse(
+            content={"status": "error", "message": str(e)},
+            status_code=500
+        )
 
 
 if __name__ == "__main__":
