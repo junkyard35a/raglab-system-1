@@ -1,4 +1,4 @@
-## 📝 Technical Design Document: RAG System (Personal LAB) - Version 2
+## 📝 Technical Design Document: RAG System (Personal LAB) - Version 3
 
 ### 1. Overview
 
