@@ -4,7 +4,7 @@
 
 **Project Name**: LocalLLM RAG System (Personal Lab).
 
-**Objective**: Build a minimal but functional RAG-based QA system using Qwen-14B and a lightweight backend.  
+**Objective**: Build a minimal but functional RAG-based QA system with Qwen3-14B as a backend LLM  
 
 **Target Audience**: Developers, AI Architects, MLOps Engineers  
 
