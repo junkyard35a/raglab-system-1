@@ -1,4 +1,7 @@
-FROM ghcr.io/open-webui/open-webui:main
+FROM ghcr.io/open-webui/open-webui:main AS base
+
+# Make sure we copy the entire root filesystem to preserve scripts like start.sh
+FROM base
 
 # Install custom dependencies
 RUN pip install hf_xet
@@ -8,5 +11,11 @@ RUN pip install hf_xet
 ENV ENABLE_OLLAMA_API=False
 ENV ENABLE_OPENAI_API=True
 ENV OPENAI_API_BASE_URL=http://rag-proxy:5000/v1
-ENV WEBUI_AUTH=False
+###ENV WEBUI_AUTH=False
 ###ENV GLOBAL_LOG_LEVEL=DEBUG
+
+# Allow file creation for non-root users
+RUN echo "umask 000" >> /root/.bashrc
+
+# Fix permissions for non-root user
+RUN chown -R 1000:1000 /app

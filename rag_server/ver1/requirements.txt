@@ -1,0 +1,14 @@
+Flask
+requests
+langchain-huggingface>=0.0.1
+langchain-chroma>=0.0.1
+langchain-community>=0.0.1
+langchain>=0.2.9
+uvicorn
+fastapi
+unstructured[all-docs]
+chromadb
+sentence-transformers
+torch
+huggingface-hub
+huggingface_hub[hf_xet]

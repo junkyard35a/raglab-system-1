@@ -1,0 +1,7 @@
+# Ensure compatibility where needed
+torch==2.5.1+cu121
+torchvision==0.18.1+cu121
+torchaudio==2.5.1+cu121
+sentence-transformers==4.1.0
+transformers==4.41.2
+huggingface_hub==0.23.3

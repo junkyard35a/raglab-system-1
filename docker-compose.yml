@@ -1,15 +1,26 @@
-version: "3.8"
-
+# docker-compose.yml
 services:
-  rag-server:
-    build:
-      context: .
-      dockerfile: Dockerfile.rag_server
-    ports:
-      - "18000:18000"
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
+###  rag-server:
+###    build:
+###      context: .
+###      dockerfile: Dockerfile.rag_server
+###    ports:
+###      - "18000:18000"
+###    restart: unless-stopped
+###    volumes:
+###      - ./data:/app/data
+###    deploy:
+###      resources:
+###        reservations:
+###          devices:
+###            - driver: nvidia
+###              count: 1
+###              capabilities: [gpu]
+###    runtime: nvidia
+###    environment:
+###      NVIDIA_VISIBLE_DEVICES: all
+
+
 
   rag-proxy:
     build:
@@ -25,6 +36,19 @@ services:
       dockerfile: Dockerfile.openwebui
     ports:
       - "8080:8080"
+    environment:
+      - ENABLE_OLLAMA_API=False
+      - ENABLE_OPENAI_API=True
+      - OPENAI_API_BASE_URL=http://rag-proxy:5000/v1
+      - WEBUI_SECRET_KEY=5d897590e7e02a621b4a498972
+    volumes:
+      - ./openwebui_data:/app/backend/data
     depends_on:
       - rag-proxy
+    user: "1000:1000"
+    command: ["uvicorn", "open_webui.main:app", "--host", "0.0.0.0", "--port", "8080"]
     restart: unless-stopped
+
+volumes:
+  openwebui_data:
+    name: openwebui_data

@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  rag-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.rag_server
+    ports:
+      - "18000:18000"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+
+  rag-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.rag_proxy
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  openwebui:
+    build:
+      context: .
+      dockerfile: Dockerfile.openwebui
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rag-proxy
+    restart: unless-stopped

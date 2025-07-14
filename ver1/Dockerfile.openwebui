@@ -1,0 +1,12 @@
+FROM ghcr.io/open-webui/open-webui:main
+
+# Install custom dependencies
+RUN pip install hf_xet
+
+# Set environment
+###ENV OLLAMA_BASE_URL=http://rag-proxy:5000
+ENV ENABLE_OLLAMA_API=False
+ENV ENABLE_OPENAI_API=True
+ENV OPENAI_API_BASE_URL=http://rag-proxy:5000/v1
+ENV WEBUI_AUTH=False
+###ENV GLOBAL_LOG_LEVEL=DEBUG
