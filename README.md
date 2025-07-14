@@ -19,13 +19,13 @@
 
 #### 2.2 Infrastructure
 
-![LLM+RAG-Infra-diagram](artefacts/images/LocalLLM+RAG-Infrastructure-v20.drawio.png)
+![LLM+RAG-Infra-diagram](artefacts/images/LocalLLM+RAG-Infrastructure-v30.drawio.png)
 
 #### 2.3 Hardware Specs
 | Host | Function | GPU | Hardware | OS | LLM |
 |------|----------|-----|----------|----|-----|
 | ds1 | Local LLM | Geforce RTX 4060 16GB VRAM | AMD Ryzen 5 5500, Gigabyte B550M DS3H AC, Lexar SSD NM790 2TB, 64GB RAM | Ubuntu2404LTS | Qwen3-14b Q6_K_XL |
-| rag1 | UI + RAG | Geforce GTX 1070 8GB VRAM | AMD Ryzen 5 5500, Asus PRIME B550M-K, Kingston SNV2S1000G 1TB, 32GB RAM | Ubuntu2404LTS | Qwen3-0.6b BF16 |
+| rag1 | UI + RAG | Geforce GTX 1070 8GB VRAM | AMD Ryzen 5 5500, Asus PRIME B550M-K, Kingston SNV2S1000G 1TB, 32GB RAM | Ubuntu2404LTS | Qwen3-0.6b embedding BF16 |
 
 ---
 
@@ -35,7 +35,7 @@
 |---------|----------|-------------|
 | rag_server | Document Loader | Uses `UnstructuredFileLoader` to read input files |
 | rag_server | Text Splitter | `RecursiveCharacterTextSplitter` for semantic chunking |
-| rag_server | Embedding Model | `Qwen3-0.6b BF16` |
+| rag_server | Embedding Model | `Qwen3-0.6b embedding BF16` |
 | rag_server | Vector Store | FAISS for GPU based vector DB |
 | rag_proxy | Retrieval API | FastAPI endpoint to serve similarity search |
 | rag_proxy | Query Agent | Combines retrieval + generation |
