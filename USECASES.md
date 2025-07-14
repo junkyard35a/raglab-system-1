@@ -1,11 +1,26 @@
 ## Use cases (intended)
 
-### Store CV and skillsets in RAG, then evaluate job vacancies and if over an acceptance threshold write a customized CV and cover letter
+Note: Each of these sections may/not document caveats, technical notes, and nuauces involved.
 
-### Store legal documents in RAG, then look for risks to us.
+### Career helper
+* Store CV and skillsets in RAG
+* then evaluate job vacancies
+* and if over an acceptance threshold write a customized CV and cover letter
 
-### Import medical history into RAG, and look for medical patterns otherwise missed by medical professionals.
+### Mini lawyer
+* Store legal documents in RAG
+* then look for risks to us.
 
-### Convert and import code/IAC into RAG, then summarize, evaluate and assess, and create code based off existing patterns.
+### Medical helper
+* Import medical history into RAG
+* and look for medical patterns otherwise missed by medical professionals.
 
-### Import architectural artefacts, then find GAPs in strategy, architecture, design, and fill them
+### DevOps
+* Convert and import code/IAC into RAG
+* then summarize, evaluate and assess
+* and optionally create code based off existing patterns.
+
+### IT Architect assistant
+* Import architectural artefacts
+* then find GAPs in strategy, architecture, design
+* and fill them
